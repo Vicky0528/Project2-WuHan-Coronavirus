@@ -1,1 +1,1 @@
-# Project2-WuHan-Coronavirus
+# Project2

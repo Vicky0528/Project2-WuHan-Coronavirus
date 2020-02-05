@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Landing Page</title>
+  <!-- Bring in our bootstrap stylesheet -->
+  <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="../static/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+  crossorigin=""/>
+  <!-- Leaflet JavaScript -->
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+  integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+  crossorigin=""></script>
+  <!-- Our CSS -->
+  <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+  <!-- D3 JavaScript -->
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
+</head>
+
+
+
+<body>
+    <!-- brand and toggle navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <strong><a class="navbar-brand" href="index.html">Wuhan Coronavirus Situation Dashboard</a></strong>
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" 
+        data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" 
+        aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav ml-auto">
+                    <!-- dropdown navibar -->
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" 
+                    aria-haspopup="true" aria-expanded="false">Plots</a>
+                        <div class="dropdown-menu dropdown-menu-right float-right" style="position:absolute;">
+                            <a class="dropdown-item" href="maxTemp.html">Max Temperature</a>
+                            <a class="dropdown-item" href="humidity.html">Humidity</a>
+                            <a class="dropdown-item" href="cloudiness.html">Cloudiness</a>
+                            <a class="dropdown-item" href="windspeed.html">Wind Speed</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="comparison.html">Historical Data</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="data.html">Data</a>
+                    </li>
+            </ul>
+        </div>
+    </nav>   
+
+
+    <div class="container-fluid">
+        <div class="row top-buffer">
+        </div>  <!-- top buffer -->
+    <!--Normally these medium columns go full wide on small screen sizes-->
+            <!-- <div class="row row-cols-1 row-cols-md-4"> -->
+            <div class="row">
+                <div class = "card-group mx-auto"> <!--card deck is used separate cards/card group make it together-->
+                <div class="col-ms-3">
+                    <div class="card text-white bg-danger mb-3" style="min-width: 29rem; max-height:8rem;">
+                        <div class="card-header" style="font-weight: bold;font-size:18px; text-align: center;max-height:3rem;">Total Confirmed</div>
+                        <div class="card-body" style="text-align:center;max-height:4rem;">
+                        
+                        </div>
+                    </div>
+                </div>
+                <div class="col-ms-3">
+                    <div class="card text-white bg-warning mb-3" style="min-width: 29rem; max-height:8rem;">
+                        <div class="card-header" style="font-weight: bold;font-size:18px; text-align: center;max-height:3rem;">Total Suspected</div>
+                        <div class="card-body" style="text-align:center;max-height:4rem;">
+                          
+                        </div>
+                    </div>
+                </div>
+                <div class="col-ms-3">
+                    <div class="card text-white bg-secondary mb-3" style="min-width: 29rem; max-height:8rem;">
+                        <div class="card-header" style="font-weight: bold;font-size:18px; text-align: center;max-height:3rem;">Total Dead</div>
+                        <div class="card-body" style="text-align:center;max-height:4rem;">
+                          
+                        </div>
+                    </div>
+                </div>
+                <div class="col-ms-3">
+                    <div class="card text-white bg-success mb-3" style="min-width: 29rem; max-height:8rem;">
+                        <div class="card-header" style="font-weight: bold;font-size:18px; text-align: center;max-height:3rem;">Total Recovered</div>
+                        <div class="card-body" style="text-align:center;max-height:4rem;">
+                          
+                        </div>
+                    </div>
+                </div>
+            </div> <!--card deck-->
+        </div> <!--row-->
+    </div> <!--container-->
+
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-2">
+                <div id="table-area" class="table-wrapper-scroll-y my-custom-scrollbar">
+                    <table id = "world-table" class="" style="margin-left:10px;">
+                        <thead class="table-active">
+                            <tr style="font-weight: bold;font-size:12px; text-align: center;">
+                                <th class ="table-head">COUNTRY</th>
+                                <th class ="table-head">CONFIRMED</th>
+                                <th class ="table-head">SUSPECTED</th>
+                                <th class ="table-head">DEAD</th>
+                                <th class ="table-head">CURED</th>
+                            </tr>
+                        </thead>
+                        <tbody style="text-align: center;"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-7">
+                <div id="map" style="width: 100%; height: 600px; position: absolute; left: 30px;"></div>
+            </div> 
+        
+            <div class="col-3">
+                <div class="sidebar">
+                    <h2 class="sidebar_header">Visualizations</h2>
+                    <hr>
+                    <div class="sidebar-images" id="sidebar-images">
+                        <a href="#"><img class="sidebar-image" id="maxT_figure" src="#"  alt="maxTemp"></a>
+                        <a href="#"><img class="sidebar-image" id="humidity_figure" src="#"  alt="humidity"></a>
+                        <a href="#"><img class="sidebar-image" id="cloudness_figure" src="#"  alt="cloudness" ></a>
+                        <a href="#"><img class="sidebar-image" id="windspeed_figure" src="#"  alt="windspeed"></a> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+ <!-- Footer -->
+    <footer>
+        <div class="footer navbar-fixed-bottom">&copy; Copyright Binqian Gao, Mohan Xing, Peirang Xu, Vicky Zhang 2020. All Rights Reserved.</div>
+        <script src="../static/js/test.js"></script>
+        <!-- API Key -->
+        <script type="text/javascript" src="../static/js/config.js"></script>
+        <!-- Our JavaScript -->
+        <script type="text/javascript" src="../static/js/logic.js"></script>
+    </footer>
+</body>
+</html>
+
+
+       
